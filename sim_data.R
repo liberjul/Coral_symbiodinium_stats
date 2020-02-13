@@ -21,3 +21,14 @@ hist(size_st)
 
 Xmat = model.matrix(~areas*species+depth_st+size_st)
 Xmat
+
+logit_funct <- function(x){
+  return(log(x/(1-x)))
+}
+
+inv_logit_funct <- function(x){
+  return(1/(1+exp(-x)))
+}
+
+
+beta.vec <- c(-0.5, 1.2, 6, -3, -1, 2)
