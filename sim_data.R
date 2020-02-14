@@ -19,7 +19,7 @@ size_st <- (size-mean(size))/sd(size)
 
 hist(size_st)
 
-Xmat = model.matrix(~areas*species+depth_st+size_st)
+Xmat <- model.matrix(~areas*species+depth_st+size_st)
 Xmat
 
 logit_funct <- function(x){
@@ -31,4 +31,16 @@ inv_logit_funct <- function(x){
 }
 
 
-beta.vec <- c(-0.5, 1.2, 6, -3, -1, 2)
+beta.vec <- c(-0.5, -2.2, 3.5, -3, 2, -0.4)
+
+lin.pred <- Xmat[,] %*%beta.vec  
+
+res <- inv_logit_funct(lin.pred)
+
+boxplot(res~species*areas)
+
+plot(res~depth, col=areas,
+     pch=as.character(factor(species, labels = c("A", "B"))))
+
+plot(res~size, col=areas,
+     pch=as.character(factor(species, labels = c("A", "B"))))
