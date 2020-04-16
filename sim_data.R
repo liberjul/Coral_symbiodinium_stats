@@ -1,3 +1,6 @@
+library(ggplot)
+
+setwd("C:/Users/julia/OneDrive - Michigan State University/Documents/MSU/Spring 2020/IBIO 831/Coral_symbiodinium_stats/")
 n.areas <- 2
 n.species <- 2
 n.samples <- 20
@@ -39,8 +42,16 @@ res <- inv_logit_funct(lin.pred)
 
 boxplot(res~species*areas)
 
+ggplot()
 plot(res~depth, col=areas,
      pch=as.character(factor(species, labels = c("A", "B"))))
 
 plot(res~size, col=areas,
      pch=as.character(factor(species, labels = c("A", "B"))))
+
+sim_data <- data.frame(clade_d_prop = res,
+                       depth = depth,
+                       size = size, 
+                       species = species)
+
+write.csv(sim_data, "simulated_data.csv")
