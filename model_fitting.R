@@ -135,4 +135,3 @@ lines(exp(m1234_i_p$fit-m1234_i_p$se.fit*1.96) ~ log(exp(newdata$size_cent+mean(
 lines(exp(m1234_i_p$fit+m1234_i_p$se.fit*1.96) ~ log(exp(newdata$size_cent+mean(d$size))), subset=newdata$area==2, lwd=0.2,col = 2)
 dev.off()
 
-
