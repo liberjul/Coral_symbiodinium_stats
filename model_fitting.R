@@ -4,7 +4,8 @@ library(bbmle)
 library(ggplot2) 
 library(GGally) 
 library(tidyverse)
-library(piecewiseSEM) 
+library(piecewiseSEM)
+library(lme4)
 
 d <- read.csv("simulated_data.csv", row.names = "X")
 d
@@ -33,7 +34,7 @@ plot(clade_d_prop ~ size_cent, data = d, col = species)
 plot(log(clade_d_prop) ~ depth_log, data = d, col = species)
 plot(log(clade_d_prop) ~ size_cent, data = d, col = species)
 dev.off()
-#better represntation when we transform into log clade_d_prop
+#Better representation when we transform into log clade_d_prop
 d$clade_d_prop_lg = log(d$clade_d_prop)
 #################model selection########################
 #additive
@@ -56,7 +57,7 @@ m234 <- lm(clade_d_prop_lg ~ size_cent + species + area , data = d)
 
 m1234 <- lm(clade_d_prop_lg ~ depth_log +size_cent + species + area , data = d)
 
-# interative
+# interactive
 
 
 m12_i <- lm(clade_d_prop_lg ~ depth_log *size_cent, data = d)
@@ -72,12 +73,12 @@ m234_i <- lm(clade_d_prop_lg ~ size_cent * species * area , data = d)
 
 m1234_i <- lm(clade_d_prop_lg ~ depth_log *size_cent * species * area , data = d)
 #####just to see these make sense
-m_fixed <- lmer(clade_d_prop_lg ~ depth_log +size_cent +species + (1|area) , data = d)
-m_fixed_i <- lmer(clade_d_prop_lg ~ depth_log *size_cent *species + (1|area) , data = d)
+m_randeff <- lmer(clade_d_prop_lg ~ depth_log +size_cent +species + (1|area) , data = d)
+m_randeff_i <- lmer(clade_d_prop_lg ~ depth_log *size_cent *species + (1|area) , data = d)
 m134_a <- lm(clade_d_prop_lg ~ depth_log +size_cent*area*species , data = d)
 #########################################
 tab = AICctab(m0, m1, m2, m3, m4, m12, m13, m14, m23, m24, m34,m123, m134,m234,m1234,
-              m12_i, m13_i, m14_i, m23_i, m24_i, m34_i,m123_i, m134_i,m234_i,m1234_i,m_fixed,m_fixed_i,m134_a,
+              m12_i, m13_i, m14_i, m23_i, m24_i, m34_i,m123_i, m134_i,m234_i,m1234_i,m_randeff,m_randeff_i,m134_a,
               base=TRUE, delta=TRUE, weights=TRUE, logLik=TRUE)
 class(tab) = 'data.frame'
 tab
